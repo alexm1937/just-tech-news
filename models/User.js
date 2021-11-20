@@ -1,8 +1,8 @@
 
 const { Model, DataTypes } = require('sequelize');
-const sequalize = require('../config/connection');
+const sequelize = require('../config/connection');
 
-//create our User model
+//create our User model/TABLE
 class User extends Model {}
 
 //define table columns & config
