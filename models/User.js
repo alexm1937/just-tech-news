@@ -4,7 +4,11 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 //create our User model/TABLE
-class User extends Model {}
+class User extends Model {
+    checkPassword(loginPw) {
+        return bcrypt.compareSync(loginPw, this.password);
+    }
+}
 
 //define table columns & config
 User.init(
