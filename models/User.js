@@ -1,4 +1,5 @@
 
+const bcrypt = require('bcrypt');
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -7,8 +8,8 @@ class User extends Model {}
 
 //define table columns & config
 User.init(
+    //table column definitions gp here
     {
-        //table column definitions gp here
         id: {
             //sequalize Datatypes object
             type: DataTypes.INTEGER,
@@ -38,8 +39,20 @@ User.init(
             }
         }
     },
+    //hooks && table config options here
     {
-        //table config options here
+        hooks: {
+            // sets functionality of "beforeCreate" lifecycle hook
+            // hashes passwords on user create
+            async beforeCreate(newUserData) {
+                newUserData.password = await bcrypt.hash(newUserData.password, 10);
+                return newUserData;
+            },
+            async beforeUpdate(updatedUserData) {
+                updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+                return updatedUserData
+            }
+        },
         sequelize,
         timestamps: false,
         freezeTableName: true,
