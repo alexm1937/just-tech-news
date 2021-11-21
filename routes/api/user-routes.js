@@ -1,6 +1,6 @@
 
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Post, Vote } = require('../../models');
 
 router.get('/', (req, res) => {
     //access user model and run findall() method from parent
@@ -16,7 +16,19 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     User.findOne({
         attributes: {exclude: ['password']},
-        where: { id: req.params.id }
+        where: { id: req.params.id },
+        include: [
+            {
+              model: Post,
+              attributes: ['id', 'title', 'post_url', 'created_at']
+            },
+            {
+              model: Post,
+              attributes: ['title'],
+              through: Vote,
+              as: 'voted_posts'
+            }
+          ]
     })
     .then(dbUserData => {
         if (!dbUserData) {
