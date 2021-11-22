@@ -10,7 +10,7 @@ const Comment = require('./Comment');
 User.hasMany(Post, {foreignKey: 'user_id'});
 Post.belongsTo(User, {foreignKey: 'user_id'});
 
-//relationship between users and votes through vote table
+//relationship between users and posts through vote table
 User.belongsToMany(Post, {
     through: Vote, 
     as: 'voted_posts',
