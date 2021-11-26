@@ -8,27 +8,31 @@ const Comment = require('./Comment');
 
 // create relationship between post and user
 User.hasMany(Post, {foreignKey: 'user_id'});
-Post.belongsTo(User, {foreignKey: 'user_id'});
+Post.belongsTo(User, {foreignKey: 'user_id', onDelete: 'SET NULL'});
 
 //relationship between users and posts through vote table
 User.belongsToMany(Post, {
     through: Vote, 
     as: 'voted_posts',
-    foreignKey: 'user_id'
+    foreignKey: 'user_id',
+    onDelete: 'SET NULL'
 });
 Post.belongsToMany(User, {
     through: Vote,
     as: 'voted_posts',
-    foreignKey: 'post_id'
+    foreignKey: 'post_id',
+    onDelete: 'SET NULL'
 });
 
 // connects user to vote & post to vote
 Vote.belongsTo(User, {
-    foreignKey: 'user_id'
+    foreignKey: 'user_id',
+    onDelete: 'SET NULL'
   });
   
   Vote.belongsTo(Post, {
-    foreignKey: 'post_id'
+    foreignKey: 'post_id',
+    onDelete: 'SET NULL'
   });
   
   User.hasMany(Vote, {
@@ -41,15 +45,18 @@ Vote.belongsTo(User, {
 
 //connect comments to post and user
 Comment.belongsTo(User, {
-  foreignKey: 'user_id'
+  foreignKey: 'user_id',
+  onDelete: 'SET NULL'
 });
 
 Comment.belongsTo(Post, {
-  foreignKey: 'post_id'
+  foreignKey: 'post_id',
+  onDelete: 'SET NULL'
 });
 
 User.hasMany(Comment, {
-  foreignKey: 'user_id'
+  foreignKey: 'user_id',
+  onDelete: 'SET NULL'
 });
 
 Post.hasMany(Comment, {
