@@ -3,9 +3,21 @@ const express = require('express');
 const path = require('path');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
-//handlebar.js:
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create({});
+
+const sess = {
+    secret: 'Super secret secret',
+    cookie: {},
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+      db: sequelize
+    })
+  };
+  
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,6 +25,8 @@ const PORT = process.env.PORT || 3001;
 //tells express to use handlebars?
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+
+app.use(session(sess));
 
 // this is middleware - tells server that incoming data is a JSON Object
 app.use(express.json());
